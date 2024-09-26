@@ -1,3 +1,4 @@
+"use server";
 import { createUser } from "@/db/models/user";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";

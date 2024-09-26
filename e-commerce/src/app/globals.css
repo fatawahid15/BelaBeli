@@ -17,3 +17,17 @@ body {
     --radius: 0.5rem;
   }
 }
+
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  position: relative;
+  min-width: 100%; /* Ensures that only one slide is visible at a time */
+}
+

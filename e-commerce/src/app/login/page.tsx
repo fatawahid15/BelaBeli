@@ -1,44 +1,70 @@
 import ClientFlashComponent from "@/components/ClientFlashComponent";
 import Link from "next/link";
 import { actionLogin } from "./action";
+import { GoMail } from "react-icons/go";
+import { GoKey } from "react-icons/go";
 
 const LoginPage = () => {
   return (
-    <section className="flex h-screen w-full flex-col items-center justify-center gap-4">
-      {/* Menggunakan ClientFlashComponent di sini */}
+    <section
+      className="flex h-screen w-full flex-col items-center justify-center bg-blue-50 relative bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "url('https://res.cloudinary.com/dvvwmhgbq/image/upload/v1727257981/z2bvatxsttpq9wr9lwlv.jpg')",
+      }}
+    >
       <ClientFlashComponent />
-      {/* Menggunakan action doLogin di sini */}
-      <form action={actionLogin} className="flex min-w-[25vw] flex-col gap-2">
-        <h1 className="text-center text-3xl font-semibold text-slate-700">
-          Login Page
-        </h1>
-        <input
-          className="rounded px-4 py-2"
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email"
-        />
-        <input
-          className="rounded px-4 py-2"
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-        />
+
+      <form
+        action={actionLogin}
+        className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center gap-4 w-full max-w-md z-10"
+      >
+        <h1 className="text-3xl font-bold text-center text-blue-600">Login</h1>
+
+        <div className="relative w-full">
+          <input
+            className="rounded w-full px-4 py-2 border bg-blue-200 border-gray-300 pl-10 placeholder:text-white transition-all duration-300 focus:bg-blue-300 focus:border-blue-500"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            required
+          />
+          <GoMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        </div>
+
+        <div className="relative w-full">
+          <input
+            className="rounded w-full px-4 py-2 border bg-blue-200 border-gray-300 pl-10 placeholder:text-white transition-all duration-300 focus:bg-blue-300 focus:border-blue-500"
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <GoKey className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" />
+        </div>
+
         <button
           type="submit"
-          className="rounded bg-emerald-300 px-4 py-2 transition-colors duration-300 hover:bg-emerald-500 hover:text-white/90"
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors duration-300"
         >
-          Login
+          Log in
         </button>
+
+        <div className="flex items-center justify-between w-full mt-4">
+          <hr className="w-full border-gray-300" />
+          <span className="mx-2 text-gray-400">or</span>
+          <hr className="w-full border-gray-300" />
+        </div>
+
+        <Link
+          href="/register"
+          className="mt-4 text-blue-400 hover:text-blue-600 transition-colors duration-300"
+        >
+          Belum punya akun? bikin dulu dong!
+        </Link>
       </form>
-      <Link
-        href="/register"
-        className="text-blue-400 underline underline-offset-4 transition-colors duration-300 hover:text-blue-600"
-      >
-        or do you want to register ... ?
-      </Link>
     </section>
   );
 };
