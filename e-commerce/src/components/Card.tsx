@@ -19,6 +19,7 @@ const Card: React.FC<CardProps> = ({ product }) => {
         <img
           src={product.thumbnail}
           alt={product.name}
+          loading="lazy"
           className="object-cover w-full h-full"
         />
       </div>

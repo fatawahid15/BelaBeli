@@ -1,27 +1,62 @@
-import { actionGetProducts } from "./action"; // Assuming this fetches the product data
+"use client";
 
-const ProductList = async () => {
-  const products = await actionGetProducts();
+import { useState, useEffect } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Card from "@/components/Card";
+import { actionGetProducts } from "./action";
+import { ProductModel } from "@/db/models/product";
+
+const ProductList = ({ params }: { params: string }) => {
+  const [products, setProducts] = useState<ProductModel[]>([]); // State to hold products
+  const [hasMore, setHasMore] = useState(true); // Track if more products are available
+  const [page, setPage] = useState(1); // Track the current page
+  const [loading, setLoading] = useState(false); // Loading state for smoother UX
+
+  // Fetch initial products
+  useEffect(() => {
+    const fetchInitialProducts = async () => {
+      setLoading(true);
+      const initialProducts = await actionGetProducts(1); // Load page 1 initially
+      setProducts(initialProducts);
+      setLoading(false);
+    };
+
+    fetchInitialProducts();
+  }, []);
+
+  // Function to fetch more products when scrolling
+  const fetchMoreProducts = async () => {
+    if (loading) return; // Prevent multiple calls if still loading
+    setLoading(true); // Set loading state to true
+
+    const newPage = page + 1;
+    const newProducts = await actionGetProducts(newPage);
+
+    if (newProducts.length === 0) {
+      setHasMore(false); // No more products to fetch
+    } else {
+      setProducts((prevProducts) => [...prevProducts, ...newProducts]); // Append new products
+      setPage(newPage); // Update the page
+    }
+    
+    setLoading(false); // Reset loading state
+  };
 
   return (
-    <div className="p-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <InfiniteScroll
+      dataLength={products.length} // Number of items currently loaded
+      next={fetchMoreProducts} // Function to fetch the next page
+      hasMore={hasMore} // Boolean to determine if there's more data
+      loader={<h4>Loading more products...</h4>} // Loader indicator while fetching
+      endMessage={<p>No more products to show</p>} // End message when all data is fetched
+      scrollThreshold={0.7} // Start loading more content when the user reaches 70% of the page
+    >
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 transition-all duration-300 ease-in-out">
         {products.map((product) => (
-          <div key={product.slug} className="border border-gray-300 rounded-lg p-4">
-            <img
-              src={product.thumbnail}
-              alt={product.name}
-              className="w-full h-48 object-cover rounded-md"
-            />
-            <div className="mt-4">
-              <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
-              <p className="text-red-500 font-bold mt-2">Rp{product.price.toLocaleString()}</p>
-              <p className="text-gray-500 line-through text-sm mt-1">30% Off</p>
-            </div>
-          </div>
+          <Card key={product.slug} product={product} />
         ))}
       </div>
-    </div>
+    </InfiniteScroll>
   );
 };
 

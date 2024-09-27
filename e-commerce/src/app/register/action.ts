@@ -44,7 +44,7 @@ export const actionRegister = async (formData: FormData) => {
 
     const user = await createUser(parsedData.data);
 
-    return redirect(`http://localhost:3000/login`)
+    return true
   } catch (error) {
     if (error instanceof z.ZodError) {
         console.log(error);

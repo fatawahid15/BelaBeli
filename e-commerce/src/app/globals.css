@@ -31,3 +31,6 @@ body {
   min-width: 100%; /* Ensures that only one slide is visible at a time */
 }
 
+html {
+  scroll-behavior: smooth;
+}

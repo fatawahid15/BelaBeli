@@ -18,12 +18,30 @@ export type ProductModel = {
 
 const COLLECTION_PRODUCT = "Products";
 
-export const getProducts = async () => {
+// models/product.ts
+
+export const getProducts = async (limit: number = 8, skip: number = 0) => {
+  const db = await getDb();
+
+  // Fetch products with pagination (limit and skip)
+  const products = (await db
+    .collection(COLLECTION_PRODUCT)
+    .find({})
+    .skip(skip) // Skips the previous products
+    .limit(limit) // Limits the number of products returned
+    .toArray()) as ProductModel[];
+
+  return products;
+};
+
+
+export const getLimitProducts = async () => {
   const db = await getDb();
 
   const products = (await db
     .collection(COLLECTION_PRODUCT)
     .find({})
+    .limit(8)
     .toArray()) as ProductModel[];
 
   return products;
