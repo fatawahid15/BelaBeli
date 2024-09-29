@@ -50,3 +50,7 @@ Pada challenge ini, kamu diminta untuk membuat aplikasi client-server dengan det
 - [ ] Fitur remove wishlist
 - [ ] Fitur search product berdasarkan nama (implement menerapkan debounce)
 - [ ] Fitur pagination (implement infinite scroll)
+
+
+### Link Deployment
+- https://belabeli-ngbt3mec3-fata-wahids-projects.vercel.app/ 
