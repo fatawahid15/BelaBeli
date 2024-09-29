@@ -28,9 +28,24 @@ body {
 
 .embla__slide {
   position: relative;
-  min-width: 100%; /* Ensures that only one slide is visible at a time */
+  min-width: 100%;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+@keyframes fadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-slide {
+  animation: fadeSlide 0.8s ease-out;
 }

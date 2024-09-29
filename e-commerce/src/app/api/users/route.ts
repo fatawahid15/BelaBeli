@@ -52,8 +52,6 @@ export const POST = async (request: Request) => {
         status: 201,
       }
     );
-
-    
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.log(error);

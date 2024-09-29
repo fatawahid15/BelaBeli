@@ -4,7 +4,7 @@ import { GoPerson } from "react-icons/go";
 import { GoMail } from "react-icons/go";
 import { GoKey } from "react-icons/go";
 import { actionRegister } from "./action";
-
+import { Suspense } from "react";
 const RegisterPage = () => {
   return (
     <section
@@ -14,7 +14,9 @@ const RegisterPage = () => {
           "url('https://res.cloudinary.com/dvvwmhgbq/image/upload/v1727257981/z2bvatxsttpq9wr9lwlv.jpg')",
       }}
     >
-      <ClientFlashComponent />
+      <Suspense fallback={<div>Loading flash messages...</div>}>
+        <ClientFlashComponent />
+      </Suspense>
 
       <form
         action={actionRegister}
@@ -87,7 +89,7 @@ const RegisterPage = () => {
 
         <Link
           href="/login"
-          className="mt-4 text-blue-400 hover:text-blue-600 transition-colors duration-300" // Transition on hover
+          className="mt-4 text-blue-400 hover:text-blue-600 transition-colors duration-300"
         >
           Sudah punya akun? login aja!
         </Link>

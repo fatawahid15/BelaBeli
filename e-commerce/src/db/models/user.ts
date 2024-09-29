@@ -46,21 +46,30 @@ export type userCreateTypeInput = Omit<UserModel, "_id">;
 export const createUser = async (user: userCreateTypeInput) => {
   const createdUser: userCreateTypeInput = {
     ...user,
-    password: hash(user.password),
+    password: hash(user.password), 
   };
+
   const db = await getDb();
 
+  
   const checkUsername = await db
     .collection(COLLECTION_USER)
     .findOne({ username: user.username });
+
+  if (checkUsername) {
+    throw new Error("Username already exists");
+  }
+
+  
   const checkEmail = await db
     .collection(COLLECTION_USER)
     .findOne({ email: user.email });
-  if (checkUsername || checkEmail) {
-    throw Error;
+
+  if (checkEmail) {
+    throw new Error("Email already exists");
   }
 
+  
   const result = await db.collection(COLLECTION_USER).insertOne(createdUser);
-
   return result;
 };

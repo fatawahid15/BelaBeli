@@ -26,13 +26,17 @@ export const actionLogin = async (formData: FormData) => {
     const errMessage = parsedData.error.issues[0].message;
     const errFinalMessage = `${errPath} - ${errMessage}`;
 
-    return redirect(`http://localhost:3000/login?error=${errFinalMessage}`);
+    return redirect(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/login?error=${errFinalMessage}`
+    );
   }
 
   const user = await getUserByEmail(parsedData.data.email);
 
   if (!user || !compare(parsedData.data.password, user.password)) {
-    return redirect(`http://localhost:3000/login?error=Invalid%20credentials`);
+    return redirect(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/login?error=Invalid%20credentials`
+    );
   }
 
   const payload = {
@@ -44,10 +48,10 @@ export const actionLogin = async (formData: FormData) => {
 
   cookies().set("token", token, {
     httpOnly: true,
-    secure: false, // ==========>> need to change before deployment??
-    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3) ,
+    secure: false,
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
     sameSite: "strict",
   });
 
-  return redirect(`http://localhost:3000/`);
+  return redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/`);
 };

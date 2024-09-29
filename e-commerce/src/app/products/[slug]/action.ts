@@ -1,9 +1,9 @@
-import { getProductDetail, getProducts } from "@/db/models/product"
+import { getProductDetail } from "@/db/models/product";
 
 export const actionGetProductDetail = async (slug: string) => {
-    const product = await getProductDetail(slug)
+  const product = await getProductDetail(slug);
 
-    console.log(product);
-    
-    return product
-}
+  console.log(product);
+
+  return product;
+};

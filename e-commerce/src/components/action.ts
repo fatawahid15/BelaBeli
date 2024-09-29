@@ -1,14 +1,15 @@
-// action.ts (Server Action)
 "use server";
 
 import { cookies } from "next/headers";
 
 export const deleteToken = async () => {
   try {
-    // Check if token exists, and if it does, delete it
-    cookies().get("token") && cookies().delete("token");
+    const token = cookies().get("token");
 
-    // Return a flag for client to handle redirection
+    if (token) {
+      cookies().delete("token");
+    }
+
     return true;
   } catch (error) {
     console.log(error);

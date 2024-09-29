@@ -1,19 +1,16 @@
 // components/Carousel.js
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 
 const Carousel = () => {
-  // Ref to initialize autoplay plugin
   const autoplayRef = useRef(Autoplay({ delay: 4000 }));
-  // Initialize Embla carousel with autoplay
   const [emblaRef] = useEmblaCarousel({ loop: true }, [autoplayRef.current]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-96">
-      {/* Embla carousel wrapper */}
       <div className="embla w-3/4 h-3/4" ref={emblaRef}>
         <div className="embla__container">
           <div className="embla__slide">

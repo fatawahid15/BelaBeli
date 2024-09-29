@@ -1,20 +1,66 @@
-"use client"
-
+"use client";
+import { useState } from "react";
+import { addWishlists, deleteWishlists } from "@/app/wishlists/action";
 import { ProductModel } from "@/db/models/product";
 import Link from "next/link";
 
 interface CardProps {
   product: ProductModel;
+  productData?: () => void; 
 }
 
-const Card: React.FC<CardProps> = ({ product }) => {
-    
+const Card: React.FC<CardProps> = ({ product, productData }) => {
+  const [notification, setNotification] = useState<string | null>(null); 
+  const [error, setError] = useState<string | true>(true); 
+
+  const handleClick = async () => {
+    try {
+      setNotification(null);
+      setError(true);
+  
+      const result = await addWishlists(product._id);
+      if (result) {
+        console.log(result);
+        setError(result);
+        setNotification("Fail to add");
+      } else {
+        setNotification("Added to wishlist successfully!");
+      }
+  
+      if (productData) {
+        productData();
+      }
+    } catch {
+      setError("Failed to add to wishlist.");
+    }
+  };
+  
+  const handleClick2 = async () => {
+    try {
+      setNotification(null);
+      setError(true);
+  
+      const result = await deleteWishlists(product._id);
+      if (result) {
+        setError(result); 
+      } else {
+        setNotification("Removed from wishlist successfully!");
+      }
+  
+      if (productData) {
+        productData();
+      }
+    } catch {
+      setError("Failed to remove from wishlist.");
+    }
+  };
+  
+
   return (
     <div
       key={product.slug}
       className="relative card shadow-lg h-[420px] w-[300px] group flex flex-col justify-between bg-white rounded-lg overflow-hidden transition-transform hover:scale-105"
     >
-      {/* Thumbnail */}
       <div className="relative h-[200px] overflow-hidden">
         <img
           src={product.thumbnail}
@@ -24,7 +70,6 @@ const Card: React.FC<CardProps> = ({ product }) => {
         />
       </div>
 
-      {/* Product Info */}
       <div className="p-4 flex flex-col justify-between">
         <h2 className="font-bold text-lg text-gray-800">{product.name}</h2>
         <p className="text-sm text-gray-600 mb-2">{product.excerpt}</p>
@@ -33,7 +78,6 @@ const Card: React.FC<CardProps> = ({ product }) => {
         </p>
       </div>
 
-      {/* Product Tags */}
       <div className="flex gap-2 px-4 mb-4">
         {product.tags.map((tag, index) => (
           <span
@@ -45,22 +89,21 @@ const Card: React.FC<CardProps> = ({ product }) => {
         ))}
       </div>
 
-      {/* Rating & Action Buttons */}
       <div className="flex items-center justify-between px-4 pb-4">
-        {/* Placeholder for dynamic rating */}
-        <div className="flex items-center gap-1">
-          <svg
-            fill="currentColor"
-            className="h-4 w-4 text-yellow-500"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 17.27l5.18 3.73-1.64-6.36L20.36 9H14L12 2 10 9H3.64l4.82 5.64L6.82 21z" />
-          </svg>
-          <span className="text-sm text-gray-600">4.5/5</span>
+        <div
+          className="text-blue-500 hover:text-blue-600 text-sm font-semibold cursor-pointer"
+          onClick={handleClick}
+        >
+          Add to Wishlists
         </div>
 
-        {/* View More Button */}
+        <div
+          className="text-red-500 hover:text-red-600 text-sm font-semibold cursor-pointer"
+          onClick={handleClick2}
+        >
+          Delete from Wishlists
+        </div>
+
         <Link
           href={`/products/${product.slug}`}
           className="text-blue-500 hover:text-blue-600 text-sm font-semibold"
@@ -68,6 +111,18 @@ const Card: React.FC<CardProps> = ({ product }) => {
           View Details
         </Link>
       </div>
+
+      {notification && (
+        <div className="text-center p-2 bg-green-100 text-green-800 rounded mt-2">
+          {notification}
+        </div>
+      )}
+
+      {error && (
+        <div className="text-center p-2 bg-red-100 text-red-800 rounded mt-2">
+          {error}
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,3 @@
-// NavbarWrapper.js (Server Component)
 import Navbar from "@/components/NavBar";
 import { cookies } from "next/headers";
 

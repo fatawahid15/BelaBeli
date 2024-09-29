@@ -3,8 +3,19 @@ import Link from "next/link";
 import { actionLogin } from "./action";
 import { GoMail } from "react-icons/go";
 import { GoKey } from "react-icons/go";
+import { cookies } from "next/headers"; // Import cookies from next/headers
+import { redirect } from "next/navigation"; // Import redirect from next/navigation
+import { Suspense } from "react";
 
 const LoginPage = () => {
+  // Check for token in the cookies
+  const token = cookies().get("token");
+
+  // Redirect to home if token exists
+  if (token) {
+    redirect("/");
+  }
+
   return (
     <section
       className="flex h-screen w-full flex-col items-center justify-center bg-blue-50 relative bg-cover bg-center"
@@ -13,7 +24,9 @@ const LoginPage = () => {
           "url('https://res.cloudinary.com/dvvwmhgbq/image/upload/v1727257981/z2bvatxsttpq9wr9lwlv.jpg')",
       }}
     >
-      <ClientFlashComponent />
+      <Suspense fallback={<div>Loading flash messages...</div>}>
+        <ClientFlashComponent />
+      </Suspense>
 
       <form
         action={actionLogin}

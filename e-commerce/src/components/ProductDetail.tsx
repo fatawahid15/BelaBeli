@@ -2,6 +2,7 @@
 
 import { ObjectId } from 'mongodb';
 import React from 'react';
+import WishlistActions from './WishlistsActions';
 
 interface ProductDetailProps {
   product: {
@@ -24,7 +25,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
     <div className="min-h-screen flex items-center justify-center">
       <div className="container mx-auto p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Left Section: Product Image */}
           <div className="flex flex-col items-center">
             <img
               src={product.thumbnail}
@@ -43,7 +43,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
             </div>
           </div>
 
-          {/* Right Section: Product Details */}
           <div className="flex flex-col justify-center">
             <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
             <p className="text-xl text-red-500 mb-4">Rp{product.price.toLocaleString()}</p>
@@ -55,12 +54,12 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               ))}
             </div>
 
-            {/* Button (Simulating Add to Cart or Purchase Options) */}
             <button className="btn btn-primary mb-4">Purchase Now</button>
 
             <div className="text-sm text-gray-600 mt-4">
               <p><strong>Created At:</strong> {new Date(product.createdAt).toLocaleDateString()}</p>
               <p><strong>Updated At:</strong> {new Date(product.updatedAt).toLocaleDateString()}</p>
+              <WishlistActions productId={product._id}/>
             </div>
           </div>
         </div>
