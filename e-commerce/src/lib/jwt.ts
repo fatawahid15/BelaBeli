@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import * as jose from "jose";
-const SECRET_KEY = "not-safe";
+const SECRET_KEY = process.env.JWT_KEY || "tes";
 
 export const createToken = (payload: JwtPayload) =>
   jwt.sign(payload, SECRET_KEY);
